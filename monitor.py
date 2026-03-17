@@ -15,9 +15,9 @@ from email.mime.text import MIMEText
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 
-BILL_URL        = "https://www.congress.gov/bill/118th-congress/senate-bill/3971"
+BILL_URL        = "https://www.congress.gov/bill/119th-congress/senate-bill/3971"
 API_BASE        = "https://api.congress.gov/v3"
-CONGRESS        = "118"
+CONGRESS        = "119"
 BILL_TYPE       = "s"
 BILL_NUMBER     = "3971"
 RECIPIENT_EMAIL = "zekunliu99@gmail.com"
@@ -212,7 +212,7 @@ def build_email_html(bill_data, changed, prev_status, summary):
     </div>
   </div>
   <div style="padding:14px 28px;font-size:11px;color:#9ca3af;background:#f9f9f7;border:1px solid #e5e5e3;border-top:none;border-radius:0 0 8px 8px;">
-    Automated daily monitor · S.3971 (118th Congress) · <a href="{BILL_URL}" style="color:#9ca3af;">Congress.gov source</a>
+    Automated daily monitor · S.3971 (119th Congress) · <a href="{BILL_URL}" style="color:#9ca3af;">Congress.gov source</a>
   </div>
 </body></html>"""
 
