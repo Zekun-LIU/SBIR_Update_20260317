@@ -1,5 +1,5 @@
 {
-  "status": null,
-  "last_action": null,
-  "last_checked": null
+  "status": "Unknown / No Change Detected",
+  "last_action": "403 Client Error: Forbidden for url: https://www.congress.gov/bill/118th-congress/senate-bill/3971",
+  "last_checked": "2026-03-17T21:26:28.452782+00:00"
 }
