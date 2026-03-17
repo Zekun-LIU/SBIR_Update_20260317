@@ -1,0 +1,59 @@
+name: S.3971 Daily Status Monitor
+
+on:
+  # ── Daily at 9:00 AM ET (14:00 UTC) ──────────────────────────────────────
+  schedule:
+    - cron: "0 14 * * *"
+
+  # ── Manual trigger (useful for testing) ──────────────────────────────────
+  workflow_dispatch:
+    inputs:
+      force_email:
+        description: "Force send email even if no change"
+        required: false
+        default: "false"
+        type: choice
+        options: ["true", "false"]
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # 1. Check out repository (needed to persist bill_state.json via git)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}   # Personal Access Token with repo write scope
+
+      # 2. Set up Python
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # 4. Run the monitor
+      - name: Run S.3971 monitor
+        env:
+          GMAIL_SENDER:       ${{ secrets.GMAIL_SENDER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}   # Optional — enables AI summaries
+          FORCE_DAILY_EMAIL:  ${{ github.event.inputs.force_email || 'false' }}
+          STATE_FILE:         bill_state.json
+        run: python monitor.py
+
+      # 5. Commit updated state file back to the repo (state persistence)
+      - name: Commit updated bill state
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bill_state.json
+          # Only commit if the file actually changed
+          git diff --cached --quiet || git commit -m "chore: update bill state [skip ci]"
+          git push
