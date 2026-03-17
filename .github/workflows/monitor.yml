@@ -44,6 +44,7 @@ jobs:
           GMAIL_SENDER:       ${{ secrets.GMAIL_SENDER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}   # Optional — enables AI summaries
+          CONGRESS_API_KEY:  ${{ secrets.CONGRESS_API_KEY }}
           FORCE_DAILY_EMAIL:  ${{ github.event.inputs.force_email || 'false' }}
           STATE_FILE:         bill_state.json
         run: python monitor.py
